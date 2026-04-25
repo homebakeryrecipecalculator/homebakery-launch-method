@@ -1,0 +1,1815 @@
+<!DOCTYPE ht
+ml>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Homebakery Launch Method — Resource Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kraft:#C8955A;--kl:#E8C99A;--kp:#F5E6D0;
+  --kb:#FAF0E0;--esp:#2C1A0A;--bm:#5C3317;
+  --bl:#8B5E3C;--cr:#FFFBF2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--kb);color:var(--esp);font-family:'Lato',sans-serif;font-size:12px;line-height:1.6;}
+
+/* ── APP HEADER ── */
+.app-header{background:var(--esp);padding:28px 24px 22px;text-align:center;}
+.app-header h1{font-family:'Playfair Display',serif;color:var(--cr);font-size:26px;margin-bottom:6px;}
+.app-header p{color:rgba(255,251,242,.55);font-size:12px;}
+.app-badge{display:inline-block;margin-top:8px;background:var(--kraft);color:var(--esp);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;}
+
+/* ── INDEX ── */
+.index-container{max-width:820px;margin:0 auto;padding:24px 16px 40px;}
+.calc-banner{background:var(--esp);border-radius:9px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:28px;}
+.calc-banner .ct{font-family:'Playfair Display',serif;color:var(--cr);font-size:14px;margin-bottom:2px;}
+.calc-banner .cs{color:rgba(255,251,242,.55);font-size:11px;}
+.calc-banner a{background:var(--kraft);color:var(--esp);padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:11px;white-space:nowrap;}
+.mod-block{margin-bottom:26px;}
+.mod-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--kraft);margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--kraft);}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.nav-card{background:var(--cr);border:1.5px solid var(--kl);border-radius:9px;padding:13px 14px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:all .18s;}
+.nav-card:hover{border-color:var(--kraft);background:var(--kp);transform:translateY(-1px);box-shadow:0 3px 10px rgba(44,26,10,.08);}
+.nav-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.nav-name{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:2px;color:var(--esp);}
+.nav-lesson{font-size:10px;color:var(--bl);margin-bottom:4px;}
+.nav-action{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--kraft);}
+.index-footer{background:var(--esp);text-align:center;padding:18px;color:rgba(255,251,242,.35);font-size:10px;}
+.index-footer strong{color:var(--kl);}
+
+/* ── WORKSHEET PAGE ── */
+.ws-panel{display:none;background:var(--kb);}
+.ws-page{
+  width:8.5in;
+  min-height:11in;
+  background:var(--cr);
+  margin:20px auto;
+  padding:0;
+  box-shadow:0 2px 20px rgba(0,0,0,.12);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+.ws-header{
+  background:var(--esp);
+  padding:0.22in 0.65in;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ws-title{font-family:'Playfair Display',serif;color:var(--cr);font-size:17px;margin-bottom:2px;}
+.ws-lesson{font-size:10px;color:var(--kl);letter-spacing:.5px;}
+.ws-header-right{font-size:22px;}
+.ws-content{
+  flex:1;
+  padding:0.3in 0.65in 0.2in 0.65in;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.ws-footer{
+  background:var(--esp);
+  padding:0.1in 0.65in;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ws-footer span{font-size:10px;color:rgba(255,251,242,.5);}
+.ws-footer strong{color:var(--kl);}
+
+/* BACK/PRINT BUTTONS */
+.ws-toolbar{
+  position:sticky;
+  top:0;
+  z-index:999;
+  background:var(--esp);
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border-bottom:2px solid var(--kraft);
+}
+.ws-toolbar-title{
+  font-family:'Playfair Display',serif;
+  color:var(--kl);
+  font-size:13px;
+  flex:1;
+}
+.ws-toolbar{
+  display:flex;gap:8px;align-items:center;
+  padding:10px 20px;background:var(--kb);
+  border-bottom:1px solid var(--kl);
+  position:sticky;top:0;z-index:50;
+}
+.back-btn{background:var(--kraft);color:var(--esp);padding:6px 16px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;border:none;font-family:'Lato',sans-serif;}
+.print-btn{background:transparent;color:var(--kraft);border:1.5px solid var(--kraft);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
+.print-btn:hover{background:var(--kraft);color:var(--esp);}
+
+/* FORM ELEMENTS */
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bm);margin-bottom:3px;}
+.hint{font-size:10px;color:var(--bl);font-style:italic;margin-bottom:3px;}
+.line{display:block;width:100%;border:none;border-bottom:1.5px solid var(--kl);background:transparent;padding:4px 2px;font-family:'Lato',sans-serif;font-size:12px;color:var(--esp);outline:none;margin-bottom:2px;}
+.line::placeholder{color:var(--kl);}
+.box{width:100%;border:1.5px solid var(--kl);border-radius:4px;background:transparent;padding:6px 8px;font-family:'Lato',sans-serif;font-size:12px;color:var(--esp);outline:none;resize:none;min-height:52px;}
+.box::placeholder{color:var(--kl);}
+.line:focus,.box:focus{border-color:var(--kraft);}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* SECTION */
+.section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--kraft);margin:12px 0 7px;display:flex;align-items:center;gap:8px;}
+.section::after{content:'';flex:1;height:1px;background:var(--kl);}
+
+/* INFO */
+.info{background:var(--kp);border-left:3px solid var(--kraft);border-radius:0 4px 4px 0;padding:7px 10px;font-size:11px;color:var(--bm);margin-bottom:10px;font-style:italic;}
+
+/* CHECKLIST */
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--kp);font-size:11px;}
+.checklist li:last-child{border-bottom:none;}
+.cb{width:15px;height:15px;border:2px solid var(--kraft);border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;position:relative;}
+.cb.checked::after{content:'✓';position:absolute;top:-3px;left:1px;color:var(--esp);font-size:12px;font-weight:700;}
+
+/* PALE/DARK BOX */
+.pale-box{background:var(--kp);border-radius:6px;padding:9px 11px;margin-bottom:9px;}
+.pale-box-title{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:5px;}
+.pale-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--kraft);margin-bottom:4px;}
+.dark-box{background:var(--esp);color:var(--cr);border-radius:6px;padding:10px 12px;margin-bottom:9px;}
+.dark-box-title{font-family:'Playfair Display',serif;font-size:13px;color:var(--kl);margin-bottom:5px;}
+
+/* TABLE */
+.ws-table{width:100%;border-collapse:collapse;margin-top:5px;font-size:11px;}
+.ws-table th{background:var(--esp);color:var(--kl);padding:6px 7px;font-size:9px;text-transform:uppercase;letter-spacing:.7px;text-align:left;font-weight:700;}
+.ws-table td{padding:6px 7px;border-bottom:1px solid var(--kp);}
+.ws-table tr:nth-child(even) td{background:var(--kp);}
+.ws-table input{border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:100%;font-family:'Lato',sans-serif;font-size:11px;outline:none;}
+
+/* PRINT */
+@page{margin:0;size:8.5in 11in;}
+@media print{
+  body{background:white;}
+  .app-header,#index-view,.ws-toolbar{display:none!important;}
+  .ws-panel{display:block!important;}
+  .ws-page{
+    margin:0;
+    box-shadow:none;
+    width:8.5in;
+    min-height:11in;
+    page-break-after:always;
+  }
+  .ws-header,.ws-footer,.pale-box,.dark-box,.info,.ws-table th{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+}
+
+@media(max-width:520px){.nav-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--kraft);margin-bottom:8px;">Drott's Handmade · by Heather Drott</div>
+  <h1>The Homebakery Launch Method</h1>
+  <p>Click any resource to open it. Every worksheet prints perfectly front and back on 8.5 × 11 paper.</p>
+  <span class="app-badge">Student Resource Library — 24 Worksheets</span>
+</div>
+
+<div id="index-view">
+<div class="index-container">
+  <div class="calc-banner">
+    <div><div class="ct">🧁 Homebakery Cost Calculator</div><div class="cs">Pantry · Recipes · Profit First · Projections · Sales Channels</div></div>
+    <a href="https://homebakeryrecipecalculator.github.io/Bakery-Calculator-/" target="_blank">Open Calculator</a>
+  </div>
+  
+  <div class="mod-block">
+    <div class="mod-label">Module 1 — Foundation · Lessons 1.1–1.4</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws01startingpoint')">
+  <div class="nav-icon">🌱</div>
+  <div><div class="nav-name">My Starting Point</div><div class="nav-lesson">Lesson 1.1 · Welcome & Your 90-Day Roadmap</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws02legalchecklist')">
+  <div class="nav-icon">⚖️</div>
+  <div><div class="nav-name">Legal Checklist</div><div class="nav-lesson">Lesson 1.2 · Cottage Food Laws Explained</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws03businesssetup')">
+  <div class="nav-icon">🏦</div>
+  <div><div class="nav-name">Business Setup Checklist</div><div class="nav-lesson">Lesson 1.3 · Setting Up Your Business the Right Way</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws04profitfirst')">
+  <div class="nav-icon">💰</div>
+  <div><div class="nav-name">Profit First Setup Worksheet</div><div class="nav-lesson">Lesson 1.4 · Profit First 101</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 2 — Your Offer · Lessons 2.1–2.2</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws05undercharging')">
+  <div class="nav-icon">💵</div>
+  <div><div class="nav-name">Undercharging Self-Assessment</div><div class="nav-lesson">Lesson 2.1 · Why You Keep Undercharging</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws06storybuilder')">
+  <div class="nav-icon">✍️</div>
+  <div><div class="nav-name">Story Builder Worksheet</div><div class="nav-lesson">Lesson 2.2 · Your Story Is Your Differentiator</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 3 — Product & Pricing · Lessons 3.1–3.3</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws07menumatrix')">
+  <div class="nav-icon">🧁</div>
+  <div><div class="nav-name">Menu Evaluation Matrix</div><div class="nav-lesson">Lesson 3.1 · Building Your Signature Menu</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws08pricingconfidence')">
+  <div class="nav-icon">💲</div>
+  <div><div class="nav-name">Pricing Confidence Worksheet</div><div class="nav-lesson">Lesson 3.2 · Pricing for Profit</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws09productionplanner')">
+  <div class="nav-icon">📋</div>
+  <div><div class="nav-name">Weekly Production Planner</div><div class="nav-lesson">Lesson 3.3 · Scaling & Batching</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 4 — Weekly Bake Cycle · Lessons 4.1–4.2</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws10bakecycle')">
+  <div class="nav-icon">🔄</div>
+  <div><div class="nav-name">Weekly Bake Cycle Template</div><div class="nav-lesson">Lesson 4.1 · Why the Weekly Bake Cycle Changes Everything</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws11ordersystem')">
+  <div class="nav-icon">📱</div>
+  <div><div class="nav-name">Order System Setup Checklist</div><div class="nav-lesson">Lesson 4.2 · Setting Up Your Order System</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 5 — Getting Your First Customers · Lessons 5.1–5.3</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws12warmnetwork')">
+  <div class="nav-icon">👥</div>
+  <div><div class="nav-name">Warm Network + Outreach Tracker</div><div class="nav-lesson">Lesson 5.1 · Your First Customers Are Closer Than You Think</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws13facebookchecklist')">
+  <div class="nav-icon">📘</div>
+  <div><div class="nav-name">Facebook Page Setup & Posting Checklist</div><div class="nav-lesson">Lesson 5.2 · Facebook for Local Sales</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws14instagramchecklist')">
+  <div class="nav-icon">📸</div>
+  <div><div class="nav-name">Instagram Profile Checklist</div><div class="nav-lesson">Lesson 5.3 · Instagram Basics</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 6 — First Order Cycle · Lessons 6.1–6.2</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws15launchchecklist')">
+  <div class="nav-icon">🚀</div>
+  <div><div class="nav-name">Launch Day Checklist</div><div class="nav-lesson">Lesson 6.1 · Opening Your First Order Cycle</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws16cyclereflection')">
+  <div class="nav-icon">🪞</div>
+  <div><div class="nav-name">First Cycle Reflection</div><div class="nav-lesson">Lesson 6.2 · Bake Day and Delivery</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 7 — Running Your Business · Lessons 7.1–7.4</div>
+    <div class="nav-grid">
+      <div class="nav-card" onclick="showWS('ws17bakeweek')">
+        <div class="nav-icon">📅</div>
+        <div><div class="nav-name">Ideal Bake Week Template</div><div class="nav-lesson">Lesson 7.1 · Designing Your Ideal Bake Week</div><div class="nav-action">Open & Print →</div></div>
+      </div>
+      <div class="nav-card" onclick="showWS('ws18customertemplates')">
+        <div class="nav-icon">💬</div>
+        <div><div class="nav-name">Customer Message Templates</div><div class="nav-lesson">Lesson 7.2 · Managing Orders, Customers & Repeat Buyers</div><div class="nav-action">Open & Print →</div></div>
+      </div>
+      <div class="nav-card" onclick="showWS('ws19financialhealthcheck')">
+        <div class="nav-icon">📊</div>
+        <div><div class="nav-name">Financial Health Check</div><div class="nav-lesson">Lesson 7.3 · Reading Your Numbers with Profit First</div><div class="nav-action">Open & Print →</div></div>
+      </div>
+      <div class="nav-card" onclick="showWS('ws25operationsmanual')">
+        <div class="nav-icon">📋</div>
+        <div><div class="nav-name">Home Bakery Operations Manual</div><div class="nav-lesson">Lesson 7.4 · Your Complete SOP</div><div class="nav-action">Open & Print →</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Module 8 — Your Next 90 Days · Lessons 8.1–8.3</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws20pricereview')">
+  <div class="nav-icon">💲</div>
+  <div><div class="nav-name">90-Day Price Review</div><div class="nav-lesson">Lesson 8.1 · When to Raise Your Prices</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws2190dayreview')">
+  <div class="nav-icon">🎯</div>
+  <div><div class="nav-name">90-Day Review</div><div class="nav-lesson">Lesson 8.2 · Your 90-Day Review</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws22next90goals')">
+  <div class="nav-icon">🌟</div>
+  <div><div class="nav-name">Next 90-Day Goals</div><div class="nav-lesson">Lesson 8.3 · Your Next 90 Days</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+  <div class="mod-block">
+    <div class="mod-label">Community & Accountability</div>
+    <div class="nav-grid"><div class="nav-card" onclick="showWS('ws23accountability')">
+  <div class="nav-icon">📣</div>
+  <div><div class="nav-name">Weekly Accountability Check-In</div><div class="nav-lesson">Post 3× per week in the Accountability tab of your community</div><div class="nav-action">Open & Print →</div></div>
+</div>
+<div class="nav-card" onclick="showWS('ws24phasechecklists')">
+  <div class="nav-icon">✅</div>
+  <div><div class="nav-name">All 4 Phase Checklists</div><div class="nav-lesson">Complete all 4 phases to qualify for the guarantee</div><div class="nav-action">Open & Print →</div></div>
+</div></div>
+  </div>
+</div>
+<div class="index-footer"><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade · Built from a real home bakery in Atoka, Oklahoma</div>
+</div>
+
+<div id="ws01startingpoint" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">My Starting Point</div>
+        <div class="ws-lesson">Lesson 1.1 · Welcome & Your 90-Day Roadmap</div>
+      </div>
+      <div class="ws-header-right">🌱</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Fill this out on Day 1 before you take a single order. Read it again on Day 90. The distance will mean something.</div>
+  <div class="field"><label>Today's Date</label><input class="line" type="text" placeholder=""></div>
+  <div class="section">Where I Am Right Now</div>
+  <div class="g2">
+    <div class="field"><label>My bakery name</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>My state</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="field"><label>Have I taken paid orders before? What has that looked like?</label><textarea class="box" placeholder="How many, how often, how much..."></textarea></div>
+  <div class="field"><label>Current weekly/monthly revenue from baking</label><input class="line" type="text" placeholder="$"></div>
+  <div class="section">What I'm Starting With</div>
+  <div class="g2">
+    <div class="field"><label>Products I make well</label><textarea class="box" style="min-height:55px;" placeholder="List them..."></textarea></div>
+    <div class="field"><label>What I have set up already</label><textarea class="box" style="min-height:55px;" placeholder="LLC, bank account, social media..."></textarea></div>
+  </div>
+  <div class="section">What I'm Hoping For</div>
+  <div class="field"><label>In 90 days I want to...</label><textarea class="box" placeholder="Revenue goal, number of customers, what a good week looks like..."></textarea></div>
+  <div class="field"><label>The real reason I want to build this</label><textarea class="box" placeholder="Not the surface answer — the real one..."></textarea></div>
+  <div class="section">What I'm Afraid Of</div>
+  <div class="g2">
+    <div class="field"><label>What I'm most afraid will happen</label><textarea class="box" style="min-height:55px;" placeholder="Name it. It loses power when you say it out loud."></textarea></div>
+    <div class="field"><label>The story I tell myself about why I'm not ready</label><textarea class="box" style="min-height:55px;" placeholder="I don't have... / I'm not... / Once I..."></textarea></div>
+  </div>
+  <div class="section">My Commitment</div>
+  <div class="field"><label>I commit to showing up for this program by...</label><textarea class="box" placeholder="3x weekly community posts, completing every action step, first order cycle by..."></textarea></div>
+  <div class="dark-box" style="margin-top:10px;font-size:11px;"><strong style="color:var(--kl);">Save this.</strong> On Day 90 you will read it and feel the distance between who you were and who you are now.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 1.1 · Welcome & Your 90-Day Roadmap</span>
+    </footer>
+  </div>
+</div>
+<div id="ws02legalchecklist" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Legal Checklist</div>
+        <div class="ws-lesson">Lesson 1.2 · Cottage Food Laws Explained</div>
+      </div>
+      <div class="ws-header-right">⚖️</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Complete every item before you take your first paid order. Resource: forrager.com — most accurate free guide for all 50 states.</div>
+  <div class="section">My State's Cottage Food Law</div>
+  <div class="g3">
+    <div class="field"><label>My State</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Annual Sales Cap</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Permit Required?</label><input class="line" type="text" placeholder="Yes / No"></div>
+  </div>
+  <div class="field"><label>Products I can legally sell</label><textarea class="box" style="min-height:50px;" placeholder="Breads, cookies, cakes, pastries..."></textarea></div>
+  <div class="field"><label>Where I can legally sell</label><textarea class="box" style="min-height:45px;" placeholder="Home, farmers market, local stores, online, delivery..."></textarea></div>
+  <div class="field"><label>Required label disclaimer (copy exact wording)</label><textarea class="box" style="min-height:45px;" placeholder="Not made in a licensed commercial kitchen..."></textarea></div>
+  <div class="section">Legal Checklist</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Looked up my state's cottage food law at forrager.com</span></li>
+    <li><div class="cb"></div><span>Wrote down my 5 key answers: products, where, cap, permit, labels</span></li>
+    <li><div class="cb"></div><span>Called my city clerk's office — asked about local business license</span></li>
+    <li><div class="cb"></div><span>Registered for sales tax permit if required in my state</span></li>
+    <li><div class="cb"></div><span>Designed product label with all required elements in Canva</span></li>
+    <li><div class="cb"></div><span>Label includes required state disclaimer statement</span></li>
+    <li><div class="cb"></div><span>All allergens listed on my label</span></li>
+    <li><div class="cb"></div><span>Net weight included on my label</span></li>
+  </ul>
+  <div class="section">Local Rules</div>
+  <div class="field"><label>What my city/county said when I called</label><textarea class="box" placeholder="Who I spoke with, what they said, any requirements..."></textarea></div>
+  <div class="field"><label>Date I confirmed I am legally compliant</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 1.2 · Cottage Food Laws Explained</span>
+    </footer>
+  </div>
+</div>
+<div id="ws03businesssetup" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Business Setup Checklist</div>
+        <div class="ws-lesson">Lesson 1.3 · Setting Up Your Business the Right Way</div>
+      </div>
+      <div class="ws-header-right">🏦</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Complete every item before you open your first orders. This is the foundation everything else sits on.</div>
+  <div class="section">Business Structure</div>
+  <div class="field"><label>My chosen structure</label>
+    <div style="display:flex;gap:20px;margin-top:5px;">
+      <label style="display:flex;align-items:center;gap:7px;font-weight:400;font-size:12px;cursor:pointer;"><input type="radio" name="str" style="accent-color:var(--kraft)"> Sole Proprietor</label>
+      <label style="display:flex;align-items:center;gap:7px;font-weight:400;font-size:12px;cursor:pointer;"><input type="radio" name="str" style="accent-color:var(--kraft)"> LLC</label>
+    </div>
+  </div>
+  <div class="field"><label>Official business name</label><input class="line" type="text" placeholder=""></div>
+  <div class="section">EIN — Get It Free at irs.gov</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Applied for EIN at irs.gov — free, takes 10 minutes</span></li>
+    <li><div class="cb"></div><span>EIN received and saved in a secure location</span></li>
+  </ul>
+  <div class="field" style="margin-top:8px;"><label>EIN (last 4 digits only)</label><input class="line" type="text" placeholder="XX-XXXXX _ _"></div>
+  <div class="section">Business Bank Account</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Dedicated business checking account opened — separate from personal</span></li>
+    <li><div class="cb"></div><span>Business debit card received and activated</span></li>
+    <li><div class="cb"></div><span>Online banking set up for business account</span></li>
+  </ul>
+  <div class="g2" style="margin-top:8px;">
+    <div class="field"><label>Bank name</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Date opened</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="section">Record Keeping</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Income & Expense Tracker set up with business name and start date</span></li>
+    <li><div class="cb"></div><span>Weekly update reminder set in my calendar</span></li>
+    <li><div class="cb"></div><span>All receipts saved from first business expense forward</span></li>
+  </ul>
+  <div class="section">Business Name</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Business name checked in my state's name database</span></li>
+    <li><div class="cb"></div><span>Social media handles checked and claimed</span></li>
+    <li><div class="cb"></div><span>DBA filed if using a name other than my legal name</span></li>
+  </ul>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 1.3 · Setting Up Your Business the Right Way</span>
+    </footer>
+  </div>
+</div>
+<div id="ws04profitfirst" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Profit First Setup Worksheet</div>
+        <div class="ws-lesson">Lesson 1.4 · Profit First 101</div>
+      </div>
+      <div class="ws-header-right">💰</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Set this up before your first sale. The system only works if you run it from day one.</div>
+  <div class="section">My 4 Accounts</div>
+  <div style="display:grid;gap:8px;margin-bottom:12px;">
+    <div class="pale-box"><div class="pale-label">Profit Account</div>
+      <div class="g2"><div class="field" style="margin:0"><label>Bank</label><input class="line" type="text" placeholder=""></div><div class="field" style="margin:0"><label>Account last 4</label><input class="line" type="text" placeholder="XXXX"></div></div></div>
+    <div class="pale-box"><div class="pale-label">Owner's Pay Account</div>
+      <div class="g2"><div class="field" style="margin:0"><label>Bank</label><input class="line" type="text" placeholder=""></div><div class="field" style="margin:0"><label>Account last 4</label><input class="line" type="text" placeholder="XXXX"></div></div>
+      <div class="field" style="margin-top:6px;margin-bottom:0"><label>My Owner's Pay Day</label><input class="line" type="text" placeholder="Every ____________"></div></div>
+    <div class="pale-box"><div class="pale-label">Tax Account</div>
+      <div class="g2"><div class="field" style="margin:0"><label>Bank</label><input class="line" type="text" placeholder=""></div><div class="field" style="margin:0"><label>Account last 4</label><input class="line" type="text" placeholder="XXXX"></div></div></div>
+    <div class="pale-box"><div class="pale-label">Operating Expenses Account</div>
+      <div class="g2"><div class="field" style="margin:0"><label>Bank</label><input class="line" type="text" placeholder=""></div><div class="field" style="margin:0"><label>Account last 4</label><input class="line" type="text" placeholder="XXXX"></div></div></div>
+  </div>
+  <div class="section">Starting Allocations</div>
+  <table class="ws-table">
+    <thead><tr><th>Account</th><th>Launching &lt;$500/mo</th><th>Consistent $500+/mo</th><th>My %</th></tr></thead>
+    <tbody>
+      <tr><td>Profit</td><td>1%</td><td>5%</td><td><input type="text" placeholder="%"></td></tr>
+      <tr><td>Owner's Pay</td><td>10%</td><td>25%</td><td><input type="text" placeholder="%"></td></tr>
+      <tr><td>Taxes</td><td>15%</td><td>15%</td><td><input type="text" placeholder="%"></td></tr>
+      <tr><td>Operations</td><td>74%</td><td>55%</td><td><input type="text" placeholder="%"></td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>100%</strong></td><td><strong>100%</strong></td><td><input type="text" placeholder="100%"></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:10px;">Setup Checklist</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>All 4 accounts open and labeled correctly</span></li>
+    <li><div class="cb"></div><span>Starting allocation percentages decided and written above</span></li>
+    <li><div class="cb"></div><span>Owner's Pay day set in calendar — recurring weekly reminder added</span></li>
+    <li><div class="cb"></div><span>Profit First tab opened in the Homebakery Cost Calculator</span></li>
+    <li><div class="cb"></div><span>Community post: "Profit First is set up. My owner's pay day is ____"</span></li>
+  </ul>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 1.4 · Profit First 101</span>
+    </footer>
+  </div>
+</div>
+<div id="ws05undercharging" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Undercharging Self-Assessment</div>
+        <div class="ws-lesson">Lesson 2.1 · Why You Keep Undercharging</div>
+      </div>
+      <div class="ws-header-right">💵</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Answer every question honestly. The goal is to see clearly what is driving your pricing decisions so you can change it.</div>
+  <div class="section">Which Reasons Apply to You? (Rate 1–5)</div>
+  <div style="display:grid;gap:8px;margin-bottom:12px;">
+    <div class="pale-box">
+      <div class="pale-label">Reason 1 — I don't know my real costs</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:11px;">How much does this apply to me?</span>
+        <div style="display:flex;gap:5px;">
+          <div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div>
+        </div>
+      </div>
+      <textarea class="box" style="min-height:40px;" placeholder="What costs am I not counting? Time, packaging, overhead..."></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Reason 2 — I compared to others and matched their price</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:11px;">How much does this apply to me?</span>
+        <div style="display:flex;gap:5px;">
+          <div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div>
+        </div>
+      </div>
+      <textarea class="box" style="min-height:40px;" placeholder="Who have I been comparing myself to? Do I know their real costs?"></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Reason 3 — I was afraid of what customers would think</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:11px;">How much does this apply to me?</span>
+        <div style="display:flex;gap:5px;">
+          <div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div><div class="cb" style="border-radius:50%;"></div>
+        </div>
+      </div>
+      <textarea class="box" style="min-height:40px;" placeholder="What exactly am I afraid will happen if I charge more?"></textarea>
+    </div>
+  </div>
+  <div class="section">The Real Cost of Undercharging — Run This in Your Calculator</div>
+  <div class="g3">
+    <div class="field"><label>Product I chose</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Price I charge now</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Real profitable price</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="g3">
+    <div class="field"><label>Gap per item</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Units I sell per week</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Annual cost of that gap</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="field"><label>The belief I'm carrying about my pricing that needs to change</label>
+    <textarea class="box" placeholder='"I can't charge that because..." / "People won't pay..." / "I'm just a..."'></textarea></div>
+  <div class="field"><label>What I would tell a friend who believed that about themselves</label>
+    <textarea class="box" placeholder="Write it as if speaking to someone you care about..."></textarea></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 2.1 · Why You Keep Undercharging</span>
+    </footer>
+  </div>
+</div>
+<div id="ws06storybuilder" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Story Builder Worksheet</div>
+        <div class="ws-lesson">Lesson 2.2 · Your Story Is Your Differentiator</div>
+      </div>
+      <div class="ws-header-right">✍️</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Work through all 3 parts before writing your final story. These prompts are the raw material. Your story comes from this.</div>
+  <div class="pale-box">
+    <div class="pale-label">Part 1 — The Before</div>
+    <div class="pale-box-title">Where were you? What was missing or hard?</div>
+    <div class="field"><label>What was my life situation when this started?</label><textarea class="box" style="min-height:50px;" placeholder="Stay-at-home mom, looking for income that fit around my family..."></textarea></div>
+    <div class="field" style="margin-bottom:0"><label>What was I looking for that I hadn't found yet?</label><textarea class="box" style="min-height:45px;" placeholder="Income, purpose, something of my own, community connection..."></textarea></div>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Part 2 — The Turning Point</div>
+    <div class="pale-box-title">What changed? What made you actually start?</div>
+    <div class="field"><label>The moment or season that moved me to start</label><textarea class="box" style="min-height:50px;" placeholder="A specific moment, a slow buildup, someone's encouragement..."></textarea></div>
+    <div class="field" style="margin-bottom:0"><label>What I actually DID to start</label><textarea class="box" style="min-height:45px;" placeholder="First farmers market, first batch I gave away, first person who paid me..."></textarea></div>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Part 3 — The Now</div>
+    <div class="pale-box-title">Where are you today? What does this mean to you?</div>
+    <div class="field"><label>What my bakery looks like right now</label><textarea class="box" style="min-height:45px;" placeholder="Products, where I sell, how often, customers..."></textarea></div>
+    <div class="field" style="margin-bottom:0"><label>What this means to me beyond the income</label><textarea class="box" style="min-height:45px;" placeholder="Community, faith, contribution, what I'm building for my family..."></textarea></div>
+  </div>
+  <div class="section">My Founder Story — First Draft</div>
+  <div class="hint">3–5 sentences in your own voice. Read it out loud — if it sounds like you, it's ready.</div>
+  <textarea class="box" style="min-height:80px;" placeholder="Hi, I'm [name]..."></textarea>
+  <div class="field" style="margin-top:10px;"><label>The most specific detail only I can say</label>
+    <input class="line" type="text" placeholder="e.g. 'rural Oklahoma' / 'the one photo from my daughter's session' / 'farmers market table'"></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 2.2 · Your Story Is Your Differentiator</span>
+    </footer>
+  </div>
+</div>
+<div id="ws07menumatrix" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Menu Evaluation Matrix</div>
+        <div class="ws-lesson">Lesson 3.1 · Building Your Signature Menu</div>
+      </div>
+      <div class="ws-header-right">🧁</div>
+    </header>
+    <div class="ws-content">
+<div class="info">List every product and score it honestly against the 4 questions. Your launch menu = the products with the highest scores.</div>
+  <div style="font-size:10px;color:var(--bl);margin-bottom:8px;padding:7px 10px;background:var(--kp);border-radius:5px;">
+    Scoring guide: <strong>Demand</strong> = sells consistently without pushing (5=every week) &nbsp;|&nbsp; <strong>Margin</strong> = profitable at fair price &nbsp;|&nbsp; <strong>Consistent</strong> = can make it well every week &nbsp;|&nbsp; <strong>Time/Return</strong> = effort matches earnings
+  </div>
+  <table class="ws-table">
+    <thead><tr><th style="width:28%">Product</th><th style="width:14%;text-align:center">Demand<br>1–5</th><th style="width:14%;text-align:center">Margin<br>1–5</th><th style="width:14%;text-align:center">Consistent<br>1–5</th><th style="width:14%;text-align:center">Time/Return<br>1–5</th><th style="width:8%;text-align:center">Total</th><th style="width:8%;text-align:center">Launch?</th></tr></thead>
+    <tbody>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder="Product name..."></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:30px;text-align:center;font-weight:700" placeholder="—"></td><td style="text-align:center"><input type="text" style="width:40px;text-align:center" placeholder="Y/N"></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:12px;">My Launch Menu Commitment</div>
+  <div class="g2">
+    <div class="field"><label>Launch Product 1</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Launch Product 2</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Launch Product 3</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Launch Product 4 (optional)</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="field"><label>Launch Product 5 (optional)</label><input class="line" type="text" placeholder=""></div>
+  <div class="dark-box" style="margin-top:8px;font-size:11px;">Write your launch menu on a card and put it somewhere visible in your kitchen. This is your commitment. Everything else waits.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 3.1 · Building Your Signature Menu</span>
+    </footer>
+  </div>
+</div>
+<div id="ws08pricingconfidence" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Pricing Confidence Worksheet</div>
+        <div class="ws-lesson">Lesson 3.2 · Pricing for Profit</div>
+      </div>
+      <div class="ws-header-right">💲</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Use this alongside the Homebakery Cost Calculator. Build your pantry first, then price each product, then fill this out.</div>
+  <div style="background:var(--esp);border-radius:7px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+    <div style="color:var(--cr);font-size:12px;"><strong style="color:var(--kl);display:block;margin-bottom:2px;">Homebakery Cost Calculator</strong>Build your pantry, price every product, set your pay strategy</div>
+    <a href="https://homebakeryrecipecalculator.github.io/Bakery-Calculator-/" target="_blank" style="background:var(--kraft);color:var(--esp);padding:7px 12px;border-radius:6px;text-decoration:none;font-weight:700;font-size:11px;white-space:nowrap;">Open →</a>
+  </div>
+  <div class="section">My Product Pricing</div>
+  <table class="ws-table">
+    <thead><tr><th>Product</th><th>Current Price</th><th>Real Cost</th><th>Sustainable Price</th><th>Gap</th><th>Update?</th></tr></thead>
+    <tbody>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:12px;">My Pay Strategy</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;"><input type="radio" name="pay" style="accent-color:var(--kraft)"> Survival — cover costs while building</label>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;"><input type="radio" name="pay" style="accent-color:var(--kraft)"> Sustainable — cover costs + fair pay + margin</label>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;"><input type="radio" name="pay" style="accent-color:var(--kraft)"> Scale — optimized for growth</label>
+  </div>
+  <div class="g2">
+    <div class="field"><label>My hourly rate I entered in the calculator</label><input class="line" type="text" placeholder="$   /hour"></div>
+    <div class="field"><label>Date I last updated my pantry prices</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="field"><label>The price that felt uncomfortably high but was the real number</label><textarea class="box" style="min-height:45px;" placeholder="Which product? What was the price? What did I decide?"></textarea></div>
+  <div class="dark-box" style="font-size:11px;">Charging correctly is not greed. It is honesty. Price it like what it is: real ingredients, real skill, real care.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 3.2 · Pricing for Profit</span>
+    </footer>
+  </div>
+</div>
+<div id="ws09productionplanner" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Weekly Production Planner</div>
+        <div class="ws-lesson">Lesson 3.3 · Scaling & Batching</div>
+      </div>
+      <div class="ws-header-right">📋</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Map your anchor days and production sequence before you open your first orders. Design it — don't react to it.</div>
+  <div class="section">My 3 Anchor Days</div>
+  <div class="g3">
+    <div class="pale-box">
+      <div class="pale-label">Anchor Day 1 — Prep</div>
+      <div class="field"><label>Day of week</label><input class="line" type="text" placeholder="e.g. Tuesday"></div>
+      <div class="field"><label>Must-do #1</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Must-do #2</label><input class="line" type="text" placeholder=""></div>
+      <div class="field" style="margin-bottom:0"><label>Must-do #3</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Anchor Day 2 — Bake</div>
+      <div class="field"><label>Day of week</label><input class="line" type="text" placeholder="e.g. Thursday"></div>
+      <div class="field"><label>Start time</label><input class="line" type="text" placeholder="e.g. 7:00am"></div>
+      <div class="field"><label>⭐ Hard stop time</label><input class="line" type="text" placeholder="e.g. 4:00pm"></div>
+      <div class="field" style="margin-bottom:0"><label>Oven batches available</label><input class="line" type="text" placeholder="#"></div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Anchor Day 3 — Deliver</div>
+      <div class="field"><label>Day of week</label><input class="line" type="text" placeholder="e.g. Friday"></div>
+      <div class="field"><label>Delivery start</label><input class="line" type="text" placeholder="e.g. 8:00am"></div>
+      <div class="field"><label>Expected done by</label><input class="line" type="text" placeholder="e.g. noon"></div>
+      <div class="field" style="margin-bottom:0"><label>Locations/stops</label><input class="line" type="text" placeholder="#"></div>
+    </div>
+  </div>
+  <div class="section">Bake Day Production Sequence — Longest Passive Time First</div>
+  <table class="ws-table">
+    <thead><tr><th style="width:5%">#</th><th style="width:35%">Product</th><th style="width:20%">Active Time</th><th style="width:20%">Passive Time</th><th style="width:20%">Use Passive For</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">1</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">2</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">3</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">4</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">5</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td style="text-align:center;font-weight:700;color:var(--kraft)">6</td><td><input type="text" placeholder=""></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder="mins"></td><td><input type="text" placeholder=""></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:10px;">Energy Protection</div>
+  <div class="field"><label>The one thing I'm removing from bake day that drains energy without adding value</label>
+    <input class="line" type="text" placeholder=""></div>
+  <div class="field"><label>What recovery looks like for me after delivery day</label>
+    <textarea class="box" style="min-height:45px;" placeholder="What I protect, what I don't schedule..."></textarea></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 3.3 · Scaling & Batching</span>
+    </footer>
+  </div>
+</div>
+<div id="ws10bakecycle" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Weekly Bake Cycle Template</div>
+        <div class="ws-lesson">Lesson 4.1 · Why the Weekly Bake Cycle Changes Everything</div>
+      </div>
+      <div class="ws-header-right">🔄</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Map your complete weekly cycle. Same structure every single week. This is the system you run forever.</div>
+  <div class="pale-box">
+    <div class="pale-label">Part 1 — Your Menu</div>
+    <div class="g2">
+      <div class="field"><label>Menu release day & time</label><input class="line" type="text" placeholder="e.g. Sunday at 3pm"></div>
+      <div class="field"><label>Platform</label><input class="line" type="text" placeholder="Simply Bread / Hotplate / Bakesy"></div>
+    </div>
+    <div class="field" style="margin-bottom:0"><label>My 3–5 launch products</label><textarea class="box" style="min-height:45px;" placeholder="List them..."></textarea></div>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Part 2 — Order Window</div>
+    <div class="g3">
+      <div class="field"><label>Orders open</label><input class="line" type="text" placeholder="e.g. Sunday 3pm"></div>
+      <div class="field"><label>Orders close (cutoff)</label><input class="line" type="text" placeholder="e.g. Wed 9pm"></div>
+      <div class="field"><label>Reminder sent</label><input class="line" type="text" placeholder="e.g. Wed 3pm"></div>
+    </div>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Part 3 — Bake Day</div>
+    <div class="g3">
+      <div class="field"><label>Bake day</label><input class="line" type="text" placeholder="e.g. Thursday"></div>
+      <div class="field"><label>Start time</label><input class="line" type="text" placeholder="e.g. 7:00am"></div>
+      <div class="field"><label>⭐ Hard stop</label><input class="line" type="text" placeholder="e.g. 4:00pm"></div>
+    </div>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Part 4 — Delivery or Availability</div>
+    <div class="field"><label>Delivery day</label><input class="line" type="text" placeholder="e.g. Friday"></div>
+    <div class="field" style="margin-bottom:0"><label>Where orders are available or delivered</label>
+      <textarea class="box" style="min-height:50px;" placeholder="Store locations, porch pickup, delivery route..."></textarea></div>
+  </div>
+  <div class="section">My Cutoff Policy — Written Down Before I Need It</div>
+  <div class="field"><label>What I will say when someone asks to order after cutoff</label>
+    <textarea class="box" style="min-height:50px;" placeholder='"Orders closed last night — I'd love to have you next week! Here's my link: [link]"'></textarea></div>
+  <div class="dark-box" style="font-size:11px;">The cutoff is the system. Every exception trains customers that it isn't real. Hold it every single week.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 4.1 · Why the Weekly Bake Cycle Changes Everything</span>
+    </footer>
+  </div>
+</div>
+<div id="ws11ordersystem" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Order System Setup Checklist</div>
+        <div class="ws-lesson">Lesson 4.2 · Setting Up Your Order System</div>
+      </div>
+      <div class="ws-header-right">📱</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Complete every item before you open your first orders. A tested system is not optional — it is the foundation of customer trust.</div>
+  <div class="section">My Platform Choice</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;flex:1;"><input type="radio" name="plat" style="accent-color:var(--kraft)"> <div><strong>Simply Bread</strong><br><span style="font-size:10px;color:var(--bl);">simplyb.co — what Heather uses</span></div></label>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;flex:1;"><input type="radio" name="plat" style="accent-color:var(--kraft)"> <div><strong>Hotplate</strong><br><span style="font-size:10px;color:var(--bl);">hotplate.com</span></div></label>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:8px 12px;border-radius:6px;flex:1;"><input type="radio" name="plat" style="accent-color:var(--kraft)"> <div><strong>Bakesy</strong><br><span style="font-size:10px;color:var(--bl);">bakesy.app — $9.99/mo after trial</span></div></label>
+  </div>
+  <div class="section">Platform Setup Checklist</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Account created on chosen platform</span></li>
+    <li><div class="cb"></div><span>Bakery name, photo, and description added</span></li>
+    <li><div class="cb"></div><span>All launch menu products added with prices</span></li>
+    <li><div class="cb"></div><span>Payment method set up — prepay or pay at pickup</span></li>
+    <li><div class="cb"></div><span>Direct deposit/bank account connected</span></li>
+    <li><div class="cb"></div><span>Order cutoff configured</span></li>
+    <li><div class="cb"></div><span>Text notification tested — sent and received</span></li>
+    <li><div class="cb"></div><span>Test order placed and completed successfully</span></li>
+    <li><div class="cb"></div><span>Order confirmation message working</span></li>
+    <li><div class="cb"></div><span>Review request automation active (Simply Bread: 24hr auto-request)</span></li>
+  </ul>
+  <div class="section">My Menu Image</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Menu image created in Canva with bakery name</span></li>
+    <li><div class="cb"></div><span>Products, prices, and cutoff time all visible</span></li>
+    <li><div class="cb"></div><span>Order link included on the image</span></li>
+    <li><div class="cb"></div><span>Image saved and ready to post</span></li>
+  </ul>
+  <div class="section">My Order Link</div>
+  <div class="field"><label>My order page link (share this everywhere)</label><input class="line" type="text" placeholder="https://"></div>
+  <div class="field"><label>Date my test order was completed</label><input class="line" type="text" placeholder=""></div>
+  <div class="dark-box" style="font-size:11px;">The automated review request is one of the most powerful things the app does. Make sure it is turned on before your first order goes out.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 4.2 · Setting Up Your Order System</span>
+    </footer>
+  </div>
+</div>
+<div id="ws12warmnetwork" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Warm Network + Outreach Tracker</div>
+        <div class="ws-lesson">Lesson 5.1 · Your First Customers Are Closer Than You Think</div>
+      </div>
+      <div class="ws-header-right">👥</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Write 20+ names before you post anything publicly. Send 10 personal messages before your first public post. Include your order link in every single message.</div>
+  <div class="section">My Outreach Message — Draft It Here First</div>
+  <textarea class="box" style="min-height:65px;" placeholder='"Hey [Name]! I wanted to make sure you knew I started taking weekly orders for my home bakery. I make [products] and deliver every [day]. Here's my link: [link]. No pressure — just wanted you to know!"'></textarea>
+  <div class="field" style="margin-top:8px;"><label>My order link to include in every message</label><input class="line" type="text" placeholder="https://"></div>
+  <div class="section">My Warm Network — 20+ Names</div>
+  <table class="ws-table">
+    <thead><tr><th style="width:28%">Name</th><th style="width:26%">Connection (church/neighbor/etc)</th><th style="width:14%;text-align:center">Messaged</th><th style="width:18%;text-align:center">Response</th><th style="width:14%;text-align:center">Ordered</th></tr></thead>
+    <tbody>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><input type="text" style="width:60px;text-align:center" placeholder="Y/N/Wait"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+    </tbody>
+  </table>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 5.1 · Your First Customers Are Closer Than You Think</span>
+    </footer>
+  </div>
+</div>
+<div id="ws13facebookchecklist" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Facebook Page Setup & Posting Checklist</div>
+        <div class="ws-lesson">Lesson 5.2 · Facebook for Local Sales</div>
+      </div>
+      <div class="ws-header-right">📘</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Facebook — not Instagram — is where your local sales happen. Your page, your groups, your menu post every single week.</div>
+  <div class="section">Facebook Page Setup</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Dedicated Facebook bakery page created (separate from personal)</span></li>
+    <li><div class="cb"></div><span>Profile photo — a photo of YOU, not a logo</span></li>
+    <li><div class="cb"></div><span>Cover photo — your best product photo</span></li>
+    <li><div class="cb"></div><span>About section complete: story, products, location, how to order</span></li>
+    <li><div class="cb"></div><span>Order link in About section (Simply Bread/Hotplate/Bakesy)</span></li>
+    <li><div class="cb"></div><span>Order link pinned as first post on page</span></li>
+    <li><div class="cb"></div><span>Page category set to "Bakery" or "Food & Beverage"</span></li>
+  </ul>
+  <div class="section">Local Groups — Join 3–5</div>
+  <table class="ws-table">
+    <thead><tr><th>Group Name</th><th>Type</th><th style="text-align:center">Rules Read</th><th style="text-align:center">Joined</th></tr></thead>
+    <tbody>
+      <tr><td><input type="text" placeholder="[City] Buy Sell Trade"></td><td><input type="text" placeholder="Buy/Sell"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder="[City] Community"></td><td><input type="text" placeholder="Neighborhood"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder="[City] Moms"></td><td><input type="text" placeholder="Moms Group"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder="Church/Faith Group"></td><td><input type="text" placeholder="Faith Community"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" placeholder="[City] Foodies"></td><td><input type="text" placeholder="Food/Local"></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+    </tbody>
+  </table>
+  <div class="section">Weekly Posting Rhythm</div>
+  <div class="g3">
+    <div class="pale-box">
+      <div class="pale-label">Post 1 — Menu Day</div>
+      <div class="hint">Every week without fail</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Menu image posted</span></li>
+        <li><div class="cb"></div><span>Personal caption written</span></li>
+        <li><div class="cb"></div><span>Order link included</span></li>
+        <li><div class="cb"></div><span>Posted to bakery page + groups + personal page</span></li>
+      </ul>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Post 2 — Mid-Week</div>
+      <div class="hint">Behind the scenes</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Photo from kitchen/prep/bake day</span></li>
+        <li><div class="cb"></div><span>Real, personal caption</span></li>
+        <li><div class="cb"></div><span>Order link mentioned</span></li>
+      </ul>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Post 3 — Post-Delivery</div>
+      <div class="hint">Thank you / customer love</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Thank you to community</span></li>
+        <li><div class="cb"></div><span>Customer photo/review if available</span></li>
+        <li><div class="cb"></div><span>Warm, genuine tone</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="section">Converting Comments to Orders</div>
+  <div class="field"><label>My response when someone comments "this looks amazing!"</label>
+    <textarea class="box" style="min-height:45px;" placeholder='"So glad you're interested! Here's my order link: [link]. Orders close [day] — grab your spot!"'></textarea></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 5.2 · Facebook for Local Sales</span>
+    </footer>
+  </div>
+</div>
+<div id="ws14instagramchecklist" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Instagram Profile Checklist</div>
+        <div class="ws-lesson">Lesson 5.3 · Instagram Basics</div>
+      </div>
+      <div class="ws-header-right">📸</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Instagram is a long game — brand builder, not primary sales driver at launch. Set it up right, show up consistently, let it grow.</div>
+  <div class="section">Profile Setup</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Username close to your bakery name — simple and memorable</span></li>
+    <li><div class="cb"></div><span>Profile photo — a real photo of YOU, same as Facebook if possible</span></li>
+    <li><div class="cb"></div><span>Bio written — who + what + how to order, under 150 characters</span></li>
+    <li><div class="cb"></div><span>Order link in bio (Simply Bread/Hotplate/Bakesy)</span></li>
+    <li><div class="cb"></div><span>Switched to Creator or Business account (free — gives you insights)</span></li>
+  </ul>
+  <div class="field" style="margin-top:10px;"><label>My Instagram bio (150 chars max)</label>
+    <textarea class="box" style="min-height:50px;" placeholder='e.g. "Home baker in [city] 🧁 Sourdough, cookies + seasonal bakes. Weekly orders — link below 👇"'></textarea></div>
+  <div class="field"><label>My order link (in bio)</label><input class="line" type="text" placeholder="https://"></div>
+  <div class="section">Content — 3 Types, 3 Posts Per Week</div>
+  <div class="g3">
+    <div class="pale-box">
+      <div class="pale-label">Type 1 — Product</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Natural light</span></li>
+        <li><div class="cb"></div><span>Clean background</span></li>
+        <li><div class="cb"></div><span>Close-up texture/detail</span></li>
+        <li><div class="cb"></div><span>Order link in caption or "link in bio"</span></li>
+      </ul>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Type 2 — Process</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Kitchen behind the scenes</span></li>
+        <li><div class="cb"></div><span>Dough, shaping, oven, packaging</span></li>
+        <li><div class="cb"></div><span>Short Reel if comfortable</span></li>
+        <li><div class="cb"></div><span>Real and authentic — not staged</span></li>
+      </ul>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Type 3 — Person</div>
+      <ul class="checklist" style="font-size:10px;">
+        <li><div class="cb"></div><span>Photo of you</span></li>
+        <li><div class="cb"></div><span>Your story / your why</span></li>
+        <li><div class="cb"></div><span>Faith, family, community</span></li>
+        <li><div class="cb"></div><span>Real voice, honest words</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="section">Hashtag Strategy — 5 to 10 Per Post</div>
+  <div class="g3">
+    <div class="field"><label>Location-based (3)</label>
+      <input class="line" type="text" placeholder="#[city]bakery">
+      <input class="line" type="text" placeholder="#[state]foodie">
+      <input class="line" type="text" placeholder="#[city]localbusiness">
+    </div>
+    <div class="field"><label>Product-based (4)</label>
+      <input class="line" type="text" placeholder="#sourdough">
+      <input class="line" type="text" placeholder="#homebakery">
+      <input class="line" type="text" placeholder="#cottagefood">
+      <input class="line" type="text" placeholder="#artisanbread">
+    </div>
+    <div class="field"><label>Community-based (3)</label>
+      <input class="line" type="text" placeholder="#microbakery">
+      <input class="line" type="text" placeholder="#homebaker">
+      <input class="line" type="text" placeholder="#cottagefoods">
+    </div>
+  </div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 5.3 · Instagram Basics</span>
+    </footer>
+  </div>
+</div>
+<div id="ws15launchchecklist" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Launch Day Checklist</div>
+        <div class="ws-lesson">Lesson 6.1 · Opening Your First Order Cycle</div>
+      </div>
+      <div class="ws-header-right">🚀</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Do not open your orders until every item on this list is checked. This protects you from launch-day problems.</div>
+  <div class="section">Before You Open Orders</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Menu finalized — products, quantities, and prices confirmed</span></li>
+    <li><div class="cb"></div><span>Limited quantities noted if applicable</span></li>
+    <li><div class="cb"></div><span>Order platform tested — test order completed successfully</span></li>
+    <li><div class="cb"></div><span>Payment method active and tested</span></li>
+    <li><div class="cb"></div><span>Menu image complete — products, prices, cutoff, and order link visible</span></li>
+    <li><div class="cb"></div><span>Facebook caption written with order link</span></li>
+    <li><div class="cb"></div><span>Instagram caption written and order link in bio updated</span></li>
+    <li><div class="cb"></div><span>Cutoff day and time set and non-negotiable</span></li>
+    <li><div class="cb"></div><span>Production quantities confirmed — I can fulfill every order I take</span></li>
+  </ul>
+  <div class="section">Opening Day Posting Checklist</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>Menu live on order platform — text notification sent to signed-up customers</span></li>
+    <li><div class="cb"></div><span>Posted to Facebook bakery page with caption and order link</span></li>
+    <li><div class="cb"></div><span>Posted to local Facebook groups — following each group's rules</span></li>
+    <li><div class="cb"></div><span>Shared to personal Facebook page</span></li>
+    <li><div class="cb"></div><span>Posted to Instagram — order link in bio confirmed</span></li>
+    <li><div class="cb"></div><span>Personal warm network messages sent to anyone not yet reached</span></li>
+  </ul>
+  <div class="section">My First Orders</div>
+  <div class="g2">
+    <div class="field"><label>Date I opened my first orders</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Cutoff date & time</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="g2">
+    <div class="field"><label>When my first order came in</label><input class="line" type="text" placeholder="Date & time"></div>
+    <div class="field"><label>Total orders by cutoff</label><input class="line" type="text" placeholder="#"></div>
+  </div>
+  <div class="field"><label>How I felt when that first order came in</label>
+    <textarea class="box" style="min-height:55px;" placeholder="Write it down. You will want to remember this moment."></textarea></div>
+  <div class="dark-box" style="font-size:11px;">One order is proof the system works. Not a failed launch — proof. Bake it perfectly. Deliver it with care. That customer is your first loyal repeat buyer.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 6.1 · Opening Your First Order Cycle</span>
+    </footer>
+  </div>
+</div>
+<div id="ws16cyclereflection" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">First Cycle Reflection</div>
+        <div class="ws-lesson">Lesson 6.2 · Bake Day and Delivery</div>
+      </div>
+      <div class="ws-header-right">🪞</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Complete within 24 hours of your first delivery. Do not skip this. It turns one bake cycle into a system that improves every week.</div>
+  <div class="section">My Real Numbers</div>
+  <div class="g3">
+    <div class="field"><label>Total orders</label><input class="line" type="text" placeholder="#"></div>
+    <div class="field"><label>Total revenue</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Total expenses</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="g3">
+    <div class="field"><label>Gross profit</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Owner's pay allocated</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>New customers</label><input class="line" type="text" placeholder="#"></div>
+  </div>
+  <div class="g2">
+    <div class="field"><label>Bake day start time</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Bake day end time</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="section">What I Learned</div>
+  <div class="field"><label>What worked — what would I do the same next time?</label>
+    <textarea class="box" placeholder="Production order, timing, packaging, customer communication..."></textarea></div>
+  <div class="field"><label>What didn't work — what would I change?</label>
+    <textarea class="box" placeholder="What took longer than expected? What was harder than anticipated?"></textarea></div>
+  <div class="field"><label>The ONE thing I'm changing for next week</label>
+    <input class="line" type="text" placeholder="Just one. The most important one."></div>
+  <div class="section">Profit First This Cycle</div>
+  <div class="g2">
+    <div class="field"><label>Amount I moved to Profit account</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Amount I moved to Owner's Pay</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="section">The Moment</div>
+  <div class="field"><label>You just ran a real business. What does that feel like?</label>
+    <textarea class="box" placeholder="Write it here. Even if the numbers were small. You did the whole cycle — orders, bake, delivery, payment."></textarea></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 6.2 · Bake Day and Delivery</span>
+    </footer>
+  </div>
+</div>
+<div id="ws17bakeweek" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Ideal Bake Week Template</div>
+        <div class="ws-lesson">Lesson 7.1 · Designing Your Ideal Bake Week</div>
+      </div>
+      <div class="ws-header-right">📅</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Map your full week around your 3 anchor days. Be honest about what fits your real life — not an ideal version of it.</div>
+  <div class="section">My Week at a Glance</div>
+  <table class="ws-table">
+    <thead><tr><th>Day</th><th>Role</th><th>Top 3 Things That Happen This Day</th><th style="text-align:center">Protected?</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700">Monday</td><td><input type="text" style="width:80px" placeholder="Prep/Family/Rest"></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Tuesday</td><td><input type="text" style="width:80px" placeholder=""></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Wednesday</td><td><input type="text" style="width:80px" placeholder=""></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Thursday</td><td><input type="text" style="width:80px" placeholder="BAKE DAY"></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Friday</td><td><input type="text" style="width:80px" placeholder="DELIVER"></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Saturday</td><td><input type="text" style="width:80px" placeholder="Family/Rest"></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td style="font-weight:700">Sunday</td><td><input type="text" style="width:80px" placeholder="Menu day/Rest"></td><td><input type="text" placeholder="1.   2.   3."></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:12px;">Anchor Day Details</div>
+  <div class="g3">
+    <div class="pale-box">
+      <div class="pale-label">Prep & Admin Day</div>
+      <div class="field"><label>Day</label><input class="line" type="text" placeholder=""></div>
+      <div class="field" style="margin-bottom:0"><label>Menu goes live at</label><input class="line" type="text" placeholder="e.g. Sunday 3pm"></div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Bake Day</div>
+      <div class="field"><label>Day</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Start time</label><input class="line" type="text" placeholder=""></div>
+      <div class="field" style="margin-bottom:0"><label>⭐ Hard stop</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Delivery & Reset</div>
+      <div class="field"><label>Day</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Delivery start</label><input class="line" type="text" placeholder=""></div>
+      <div class="field" style="margin-bottom:0"><label>Done by</label><input class="line" type="text" placeholder=""></div>
+    </div>
+  </div>
+  <div class="section">Energy Protection</div>
+  <div class="field"><label>One thing I'm removing from my week that wastes energy without adding value</label>
+    <input class="line" type="text" placeholder=""></div>
+  <div class="field"><label>What recovery looks like for me after delivery day</label>
+    <textarea class="box" style="min-height:40px;" placeholder="What I protect, what I don't schedule, what I make space for..."></textarea></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 7.1 · Designing Your Ideal Bake Week</span>
+    </footer>
+  </div>
+</div>
+<div id="ws18customertemplates" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Customer Message Templates</div>
+        <div class="ws-lesson">Lesson 7.2 · Managing Orders, Customers & Repeat Buyers</div>
+      </div>
+      <div class="ws-header-right">💬</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Write these out before you need them. Prepared responses mean you make clear, professional decisions instead of emotional ones in the moment.</div>
+  <div class="section">Order Confirmation Message</div>
+  <div class="hint">Send automatically through your platform or manually within a few hours of every order.</div>
+  <textarea class="box" style="min-height:60px;" placeholder='"Got your order — thank you so much! Your [products] will be ready for [pickup/delivery] on [day]. I'll be in touch with details. See you then!"'></textarea>
+  <div class="section">First-Time Customer Follow-Up — Send Within 24 Hours</div>
+  <div class="hint">The highest-ROI action in your business. 60 seconds per new customer. Do it every single time.</div>
+  <textarea class="box" style="min-height:65px;" placeholder='"Hi [Name] — I just wanted to check in and make sure everything was perfect with your order. It means so much to have you as a new customer and I really hope you loved it. I'd love to see you on next week's order list!"'></textarea>
+  <div class="section">Cutoff Exception Request — Someone Asks to Order Late</div>
+  <div class="hint">Warm, clear, final. No exceptions. Every exception trains customers the cutoff isn't real.</div>
+  <textarea class="box" style="min-height:55px;" placeholder='"I'm so sorry — orders closed [night/day] and I've already finalized my production for this week. I'd love to have you next week! Here's my order link: [link]"'></textarea>
+  <div class="section">Unhappy Customer Response</div>
+  <div class="hint">Listen first. Make it right if it's your fault. Acknowledge graciously if it isn't.</div>
+  <textarea class="box" style="min-height:55px;" placeholder='"I'm so sorry to hear that — thank you for telling me. [If your fault: I'd love to make this right for you.] [If preference issue: I appreciate the feedback and I'll keep it in mind going forward.]"'></textarea>
+  <div class="section">Custom Request — Something Not on Your Menu</div>
+  <textarea class="box" style="min-height:45px;" placeholder='"That's not something I'm offering right now but I'll absolutely keep it in mind as I think about future menus. Thank you for the suggestion!"'></textarea>
+  <div class="section">Customer Who Leaves Over a Price Increase</div>
+  <textarea class="box" style="min-height:45px;" placeholder='"I completely understand — thank you so much for your support over the past [time]. I hope our paths cross again!"'></textarea>
+  <div class="dark-box" style="font-size:11px;margin-top:10px;">The best marketing you will ever do is taking excellent care of the customers you already have. Build the loyal base. Protect it. Let it grow.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 7.2 · Managing Orders, Customers & Repeat Buyers</span>
+    </footer>
+  </div>
+</div>
+<div id="ws19financialhealth" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Financial Health Check</div>
+        <div class="ws-lesson">Lesson 7.3 · Reading Your Numbers with Profit First</div>
+      </div>
+      <div class="ws-header-right">📊</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Complete every 90 days — not annually. This is how you read your business clearly instead of managing by feel.</div>
+  <div class="field"><label>Date of this review</label><input class="line" type="text" placeholder=""></div>
+  <div class="section">My 4 Account Balances Right Now</div>
+  <div class="g2">
+    <div class="field"><label>🏦 Profit Account balance</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>💰 Owner's Pay Account balance</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>🧾 Tax Account balance</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>🛒 Operations Account balance</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="section">Weekly Averages — Past 4 Weeks</div>
+  <div class="g3">
+    <div class="field"><label>Avg weekly revenue</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Avg weekly expenses</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Avg owner's pay actually taken</label><input class="line" type="text" placeholder="$"></div>
+  </div>
+  <div class="section">My Current Profit First Stage</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer;background:var(--kp);padding:7px 10px;border-radius:6px;"><input type="radio" name="pfs" style="accent-color:var(--kraft)"> Under $500/mo — 1/10/15/74</label>
+    <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer;background:var(--kp);padding:7px 10px;border-radius:6px;"><input type="radio" name="pfs" style="accent-color:var(--kraft)"> $500–$2k/mo — 5/25/15/55</label>
+    <label style="display:flex;align-items:center;gap:6px;font-size:11px;cursor:pointer;background:var(--kp);padding:7px 10px;border-radius:6px;"><input type="radio" name="pfs" style="accent-color:var(--kraft)"> $2k–$5k/mo — 10/35/15/40</label>
+  </div>
+  <div class="section">The 3 Questions That Tell You Everything</div>
+  <div class="field"><label>Is money growing in my Profit account week over week?</label>
+    <div style="display:flex;gap:12px;margin-top:5px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q1" style="accent-color:var(--kraft)"> Yes — system is working</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q1" style="accent-color:var(--kraft)"> No — something needs to change</label>
+    </div>
+  </div>
+  <div class="field"><label>Am I actually transferring Owner's Pay on my set schedule?</label>
+    <div style="display:flex;gap:12px;margin-top:5px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q2" style="accent-color:var(--kraft)"> Yes — consistently</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q2" style="accent-color:var(--kraft)"> No — I've been skipping it</label>
+    </div>
+  </div>
+  <div class="field"><label>Is my Operations account covering expenses or coming up short?</label>
+    <div style="display:flex;gap:12px;margin-top:5px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q3" style="accent-color:var(--kraft)"> Covering — pricing is working</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="radio" name="q3" style="accent-color:var(--kraft)"> Short — prices need to go up</label>
+    </div>
+  </div>
+  <div class="field"><label>Is this business working FOR me, or am I working for it?</label>
+    <textarea class="box" style="min-height:50px;" placeholder="Answer honestly based on your numbers..."></textarea></div>
+  <div class="field"><label>The ONE financial thing I need to change in the next 30 days</label>
+    <input class="line" type="text" placeholder=""></div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 7.3 · Reading Your Numbers with Profit First</span>
+    </footer>
+  </div>
+</div>
+<div id="ws20pricereview" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">90-Day Price Review</div>
+        <div class="ws-lesson">Lesson 8.1 · When to Raise Your Prices</div>
+      </div>
+      <div class="ws-header-right">💲</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Run every product through the calculator with your CURRENT ingredient prices. Compare to what you're charging now. Be honest.</div>
+  <div class="field"><label>Date of this price review</label><input class="line" type="text" placeholder=""></div>
+  <div class="field"><label>Date I last updated my pantry prices in the calculator</label><input class="line" type="text" placeholder=""></div>
+  <div class="section">The 4 Signals — Check All That Apply</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>My ingredient costs have gone up since I last priced my menu</span></li>
+    <li><div class="cb"></div><span>I consistently sell out of one or more products every week</span></li>
+    <li><div class="cb"></div><span>My Operations account is consistently coming up short</span></li>
+    <li><div class="cb"></div><span>It has been 90+ days since my last price review</span></li>
+  </ul>
+  <div class="section">My Updated Product Prices</div>
+  <table class="ws-table">
+    <thead><tr><th>Product</th><th>Current Price</th><th>New Calculated Price</th><th>Gap</th><th>Update?</th><th>New Price Date</th></tr></thead>
+    <tbody>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td><td><input type="text" placeholder=""></td></tr>
+      <tr><td><input type="text" placeholder=""></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" placeholder="$"></td><td><input type="text" style="width:40px" placeholder="Y/N"></td><td><input type="text" placeholder=""></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:10px;">My Customer Announcement</div>
+  <div class="hint">Give 1–2 weeks advance notice. Be direct. One sentence reason. Then move forward — do not apologize repeatedly.</div>
+  <textarea class="box" style="min-height:80px;" placeholder='"Starting with next week's menu, I'm updating my prices to reflect increased ingredient costs. Here's what's changing: [list products + new prices]. Thank you as always for your support — it truly means everything."'></textarea>
+  <div class="dark-box" style="margin-top:10px;font-size:11px;">Charging correctly is not greed. It is honesty. Your customers who truly value what you make want to pay you fairly.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 8.1 · When to Raise Your Prices</span>
+    </footer>
+  </div>
+</div>
+<div id="ws2190dayreview" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">90-Day Review</div>
+        <div class="ws-lesson">Lesson 8.2 · Your 90-Day Review</div>
+      </div>
+      <div class="ws-header-right">🎯</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Before you fill this out — go find your My Starting Point worksheet from Lesson 1.1 and read it. Let yourself feel the distance. Then come back here.</div>
+  <div class="g2">
+    <div class="field"><label>Today's date</label><input class="line" type="text" placeholder=""></div>
+    <div class="field"><label>Day of program</label><input class="line" type="text" placeholder="Day ___"></div>
+  </div>
+  <div class="section">Financial Picture</div>
+  <div class="g3">
+    <div class="field"><label>Total revenue — 90 days</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Total owner's pay taken</label><input class="line" type="text" placeholder="$"></div>
+    <div class="field"><label>Profit First stage</label><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="section">Honest Ratings (1 = struggling · 5 = solid)</div>
+  <table class="ws-table">
+    <thead><tr><th>Area</th><th>What I'm Rating</th><th style="text-align:center;width:60px">Score 1–5</th></tr></thead>
+    <tbody>
+      <tr><td>Order System</td><td style="font-size:10px;color:var(--bl)">Is my cycle running consistently?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+      <tr><td>Menu & Pricing</td><td style="font-size:10px;color:var(--bl)">Are prices based on real current costs?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+      <tr><td>Production</td><td style="font-size:10px;color:var(--bl)">Does bake day finish on time without crashing?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+      <tr><td>Customers</td><td style="font-size:10px;color:var(--bl)">Are buyers coming back week after week?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+      <tr><td>Energy</td><td style="font-size:10px;color:var(--bl)">Can I sustain this for another 90 days?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+      <tr><td>Financial Clarity</td><td style="font-size:10px;color:var(--bl)">Do I know my real numbers every week?</td><td style="text-align:center"><input type="text" style="width:35px;text-align:center" placeholder="—"></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:10px;">My 3 Biggest Wins</div>
+  <div style="display:grid;gap:7px;margin-bottom:10px;">
+    <div class="pale-box"><div class="pale-label" style="color:var(--kraft)">Win #1</div><input class="line" type="text" placeholder=""></div>
+    <div class="pale-box"><div class="pale-label" style="color:var(--kraft)">Win #2</div><input class="line" type="text" placeholder=""></div>
+    <div class="pale-box"><div class="pale-label" style="color:var(--kraft)">Win #3</div><input class="line" type="text" placeholder=""></div>
+  </div>
+  <div class="field"><label>The ONE most important thing to change in the next 90 days</label>
+    <input class="line" type="text" placeholder="Just one. The most important one."></div>
+  <div class="dark-box" style="font-size:11px;">Most people who want to start a home bakery never do. You took the first order. Whatever the number — you proved it works.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 8.2 · Your 90-Day Review</span>
+    </footer>
+  </div>
+</div>
+<div id="ws22next90goals" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Next 90-Day Goals</div>
+        <div class="ws-lesson">Lesson 8.3 · Your Next 90 Days</div>
+      </div>
+      <div class="ws-header-right">🌟</div>
+    </header>
+    <div class="ws-content">
+<div class="info">One goal per category. Specific, honest, grounded in your current trajectory. Not wishes — commitments.</div>
+  <div class="section">My Path Forward</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="display:flex;align-items:flex-start;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:9px 11px;border-radius:7px;flex:1;min-width:140px;"><input type="radio" name="path" style="accent-color:var(--kraft);margin-top:2px;"> <div><strong>Consolidate</strong><br><span style="font-size:10px;color:var(--bl);">System not solid yet — run it more cleanly, add nothing new</span></div></label>
+    <label style="display:flex;align-items:flex-start;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:9px 11px;border-radius:7px;flex:1;min-width:140px;"><input type="radio" name="path" style="accent-color:var(--kraft);margin-top:2px;"> <div><strong>Grow Intentionally</strong><br><span style="font-size:10px;color:var(--bl);">System solid — pick ONE growth goal</span></div></label>
+    <label style="display:flex;align-items:flex-start;gap:7px;font-size:11px;cursor:pointer;background:var(--kp);padding:9px 11px;border-radius:7px;flex:1;min-width:140px;"><input type="radio" name="path" style="accent-color:var(--kraft);margin-top:2px;"> <div><strong>Evaluate & Adjust</strong><br><span style="font-size:10px;color:var(--bl);">Something isn't working — find the constraint</span></div></label>
+  </div>
+  <div class="section">My 5 Goals — Days 91 to 180</div>
+  <div style="display:grid;gap:8px;">
+    <div class="pale-box"><div class="pale-label">Revenue Goal</div>
+      <div class="g2" style="margin-top:4px;">
+        <div class="field" style="margin-bottom:0"><label>My realistic target</label><input class="line" type="text" placeholder="$ per week / per month"></div>
+        <div class="field" style="margin-bottom:0"><label>What specifically needs to happen</label><input class="line" type="text" placeholder=""></div>
+      </div>
+    </div>
+    <div class="pale-box"><div class="pale-label">Customer Goal</div>
+      <div class="g2" style="margin-top:4px;">
+        <div class="field" style="margin-bottom:0"><label>Signed-up customers at Day 180</label><input class="line" type="text" placeholder="#"></div>
+        <div class="field" style="margin-bottom:0"><label>How I'll get there</label><input class="line" type="text" placeholder=""></div>
+      </div>
+    </div>
+    <div class="pale-box"><div class="pale-label">Operational Goal</div>
+      <div class="field" style="margin-top:4px;margin-bottom:0"><label>The one bake week improvement that matters most</label>
+        <input class="line" type="text" placeholder="More efficient bake day / tighter menu / better production schedule..."></div>
+    </div>
+    <div class="pale-box"><div class="pale-label">Financial Goal</div>
+      <div class="g2" style="margin-top:4px;">
+        <div class="field" style="margin-bottom:0"><label>Profit First stage at Day 180</label><input class="line" type="text" placeholder=""></div>
+        <div class="field" style="margin-bottom:0"><label>Revenue needed to support that</label><input class="line" type="text" placeholder="$ per month"></div>
+      </div>
+    </div>
+    <div class="pale-box"><div class="pale-label">Personal Goal</div>
+      <div class="field" style="margin-top:4px;margin-bottom:0"><label>What does sustainable look like for my life at Day 180?</label>
+        <textarea class="box" style="min-height:45px;" placeholder="Schedule, energy, family, faith — what does good look like?"></textarea></div>
+    </div>
+  </div>
+  <div class="dark-box" style="margin-top:10px;font-size:11px;"><strong style="color:var(--kl);display:block;margin-bottom:3px;">The one thing that matters more than all of these goals:</strong>Post your menu this week. Run your cycle. Show up. Do it again next week. That is the whole strategy.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 8.3 · Your Next 90 Days</span>
+    </footer>
+  </div>
+</div>
+<div id="ws23accountability" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Weekly Accountability Check-In</div>
+        <div class="ws-lesson">Post 3× per week in the Accountability tab of your community</div>
+      </div>
+      <div class="ws-header-right">📣</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Consistency in the community is how you qualify for the guarantee AND how you build the habits that make this business work. Three posts per week minimum.</div>
+  <div class="dark-box" style="margin-bottom:14px;">
+    <div class="dark-box-title">Your Check-In Format — Copy This Every Time</div>
+    <div style="font-size:12px;line-height:2.2;margin-top:6px;">
+      📅 <strong>WEEK [number] · [DAY]</strong><br>
+      ✅ <strong>COMPLETED:</strong> [What lesson or action step did you finish?]<br>
+      🧁 <strong>BAKE UPDATE:</strong> [Where are you in your bake cycle this week?]<br>
+      🚧 <strong>STUCK ON:</strong> [Your one blocker — or "None, moving forward"]<br>
+      💡 <strong>WIN OF THE WEEK:</strong> [Even small — name one thing that went right]
+    </div>
+  </div>
+  <div class="section">My Check-In Log — Track Your 3× Per Week</div>
+  <table class="ws-table">
+    <thead><tr><th style="width:8%">Week</th><th style="width:10%">Day</th><th style="width:42%">What I Completed / Bake Update</th><th style="width:28%">Win of the Week</th><th style="width:12%;text-align:center">Posted</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3" style="text-align:center;font-weight:700;vertical-align:middle">1</td><td><input type="text" style="width:50px" placeholder="Mon"></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder="Wed"></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder="Fri"></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td rowspan="3" style="text-align:center;font-weight:700;vertical-align:middle">2</td><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td rowspan="3" style="text-align:center;font-weight:700;vertical-align:middle">3</td><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+      <tr><td><input type="text" style="width:50px" placeholder=""></td><td><input type="text" placeholder=""></td><td><input type="text" placeholder=""></td><td style="text-align:center"><div class="cb" style="margin:0 auto"></div></td></tr>
+    </tbody>
+  </table>
+  <div class="section" style="margin-top:10px;">Guarantee Requirements</div>
+  <ul class="checklist">
+    <li><div class="cb"></div><span>All 4 Phase Checklists completed</span></li>
+    <li><div class="cb"></div><span>Minimum 3 accountability check-ins posted per week for 8 weeks</span></li>
+    <li><div class="cb"></div><span>90-Day Review worksheet completed and submitted</span></li>
+    <li><div class="cb"></div><span>At least one complete order cycle attempted</span></li>
+  </ul>
+  <div class="pale-box" style="margin-top:10px;font-size:11px;"><strong>The Guarantee:</strong> Complete all of the above and have not received a single paying order by Day 90 — Heather extends your free membership 90 days and works with you personally until you do.</div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Post 3× per week in the Accountability tab of your community</span>
+    </footer>
+  </div>
+</div>
+<div id="ws24phasechecklists" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">All 4 Phase Checklists</div>
+        <div class="ws-lesson">Complete all 4 phases to qualify for the guarantee</div>
+      </div>
+      <div class="ws-header-right">✅</div>
+    </header>
+    <div class="ws-content">
+<div class="info">Check off every item as you complete it. All 4 phases must be complete to qualify for the guarantee extension.</div>
+  <div class="pale-box">
+    <div class="pale-label">Phase 1 — Foundation · Days 1–21 · Modules 1–2</div>
+    <div class="g2" style="margin-bottom:8px;">
+      <div class="field"><label>Start date</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Completion date</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <ul class="checklist">
+      <li><div class="cb"></div><span>Lessons 1.1–1.4 complete</span></li>
+      <li><div class="cb"></div><span>My Starting Point Worksheet submitted</span></li>
+      <li><div class="cb"></div><span>EIN obtained and business bank account open</span></li>
+      <li><div class="cb"></div><span>4 Profit First accounts set up</span></li>
+      <li><div class="cb"></div><span>State cottage food law looked up and documented</span></li>
+      <li><div class="cb"></div><span>Label designed with all required elements</span></li>
+      <li><div class="cb"></div><span>Lessons 2.1–2.2 complete</span></li>
+      <li><div class="cb"></div><span>Undercharging Self-Assessment complete</span></li>
+      <li><div class="cb"></div><span>Founder story drafted and posted in community</span></li>
+    </ul>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Phase 2 — Your Offer · Days 22–42 · Modules 3–4</div>
+    <div class="g2" style="margin-bottom:8px;">
+      <div class="field"><label>Start date</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Completion date</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <ul class="checklist">
+      <li><div class="cb"></div><span>Lessons 3.1–3.3 complete</span></li>
+      <li><div class="cb"></div><span>Menu Evaluation Matrix complete — launch menu committed to</span></li>
+      <li><div class="cb"></div><span>Pantry built in calculator — every product priced using real costs</span></li>
+      <li><div class="cb"></div><span>Weekly Production Planner complete — hard stop time set</span></li>
+      <li><div class="cb"></div><span>Lessons 4.1–4.2 complete</span></li>
+      <li><div class="cb"></div><span>Simply Bread / Hotplate / Bakesy set up and test order completed</span></li>
+      <li><div class="cb"></div><span>Weekly Bake Cycle Template complete — all 4 parts mapped</span></li>
+      <li><div class="cb"></div><span>Cutoff day and time set and posted in community</span></li>
+    </ul>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Phase 3 — First Sales · Days 43–63 · Modules 5–6</div>
+    <div class="g2" style="margin-bottom:8px;">
+      <div class="field"><label>Start date</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Completion date</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <ul class="checklist">
+      <li><div class="cb"></div><span>Warm Network List complete — 20+ names</span></li>
+      <li><div class="cb"></div><span>10 personal outreach messages sent before first public post</span></li>
+      <li><div class="cb"></div><span>Facebook bakery page live with profile photo, bio, and pinned order link</span></li>
+      <li><div class="cb"></div><span>3 local Facebook groups joined and first menu post published</span></li>
+      <li><div class="cb"></div><span>Instagram profile optimized with order link in bio</span></li>
+      <li><div class="cb"></div><span>Launch Day Checklist complete — all items checked before opening</span></li>
+      <li><div class="cb"></div><span>First order cycle opened — "First order is in" posted in community</span></li>
+      <li><div class="cb"></div><span>First bake day complete — first delivery made</span></li>
+      <li><div class="cb"></div><span>First Cycle Reflection Worksheet complete</span></li>
+    </ul>
+  </div>
+  <div class="pale-box">
+    <div class="pale-label">Phase 4 — System & Scale · Days 64–90 · Modules 7–8</div>
+    <div class="g2" style="margin-bottom:8px;">
+      <div class="field"><label>Start date</label><input class="line" type="text" placeholder=""></div>
+      <div class="field"><label>Completion date</label><input class="line" type="text" placeholder=""></div>
+    </div>
+    <ul class="checklist">
+      <li><div class="cb"></div><span>Ideal Bake Week Template complete — 3 anchor days named and protected</span></li>
+      <li><div class="cb"></div><span>First-time customer follow-up message written and in use</span></li>
+      <li><div class="cb"></div><span>Financial Health Check Worksheet complete — 4 account balances reviewed</span></li>
+      <li><div class="cb"></div><span>Calculator pantry updated with current ingredient prices</span></li>
+      <li><div class="cb"></div><span>90-Day Review Worksheet complete</span></li>
+      <li><div class="cb"></div><span>3 wins posted in community</span></li>
+      <li><div class="cb"></div><span>Next 90-Day Goals Worksheet complete</span></li>
+      <li><div class="cb"></div><span>Path forward identified: Consolidate / Grow / Evaluate & Adjust</span></li>
+    </ul>
+  </div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Complete all 4 phases to qualify for the guarantee</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+function showWS(id){
+  document.getElementById('index-view').style.display='none';
+  document.querySelectorAll('.ws-panel').forEach(p=>p.style.display='none');
+  const p=document.getElementById(id);
+  if(p){p.style.display='block';window.scrollTo(0,0);}
+}
+function showIndex(){
+  document.querySelectorAll('.ws-panel').forEach(p=>p.style.display='none');
+  document.getElementById('index-view').style.display='block';
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.cb').forEach(cb=>cb.addEventListener('click',()=>cb.classList.toggle('checked')));
+</script>
+
+<div id="ws25operationsmanual" class="ws-panel" style="display:none">
+  <div class="ws-toolbar"><button class="back-btn" onclick="showIndex()">← All Worksheets</button><button class="print-btn" onclick="window.print()">🖨️ Print</button></div>
+  <div class="ws-page page-1">
+    <header class="ws-header">
+      <div class="ws-header-left">
+        <div class="ws-title">Home Bakery Operations Manual</div>
+        <div class="ws-lesson">Lesson 7.4 · Your Complete SOP</div>
+      </div>
+      <div class="ws-header-right">📋</div>
+    </header>
+    <div class="ws-content">
+<div class="info">This is your complete operations system. Fill it in once. Print it. Keep it in your kitchen. Run your business from it every single week.</div>
+
+  <!-- SECTION 1 — BAKE DAY SOP -->
+  <div class="section">Section 1 — Bake Day SOP</div>
+
+  <div class="g2">
+    <div class="field"><label>Bake Day Start Time</label><input class="line" type="text" placeholder="e.g. 7:00am"></div>
+    <div class="field"><label>⭐ Hard Stop Time</label><input class="line" type="text" placeholder="e.g. 4:00pm"></div>
+  </div>
+
+  <div class="pale-box">
+    <div class="pale-label">Mise en Place Checklist — Do This Before Anything Starts</div>
+    <ul class="checklist">
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Order list reviewed — totals, special requests, quantities confirmed</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>All ingredients pulled and measured</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Equipment out and ready — bowls, pans, tools</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Packaging staged — bags, boxes, labels printed</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Production sequence written out or reviewed</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Hard stop time written where I can see it</span></li>
+    </ul>
+  </div>
+
+  <div class="field"><label>My Production Sequence — Longest Passive Time First</label>
+    <div style="display:grid;gap:5px;">
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;font-size:9px;font-weight:700;text-transform:uppercase;color:var(--bl);padding:0 4px;">#<span>Product</span><span>Active</span><span>Passive</span><span>Use Passive For</span></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;background:var(--kp);border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">1</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">2</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;background:var(--kp);border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">3</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">4</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;background:var(--kp);border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">5</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+      <div style="display:grid;grid-template-columns:24px 1fr 80px 80px 140px;gap:6px;align-items:center;padding:5px 4px;border-radius:4px;"><span style="font-weight:700;color:var(--kraft);text-align:center;">6</span><input class="line" style="margin:0" type="text" placeholder=""><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0;text-align:center" type="text" placeholder="min"><input class="line" style="margin:0" type="text" placeholder=""></div>
+    </div>
+  </div>
+
+  <div class="pale-box">
+    <div class="pale-label">End of Bake Day Checklist</div>
+    <ul class="checklist">
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Every item packaged and labeled correctly</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Orders organized by customer name</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Store deliveries separated from individual orders</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>All surfaces wiped and tools washed</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Kitchen reset for next week</span></li>
+      <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Hard stop honored — I stopped at my set time</span></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 2 — WEEKLY BUSINESS SOP -->
+  <div class="section">Section 2 — Weekly Business SOP</div>
+
+  <div style="display:grid;gap:8px;">
+    <div class="pale-box">
+      <div class="pale-label">Menu Day — Day: <input type="text" style="border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:80px;font-family:Lato,sans-serif;font-size:11px;outline:none;" placeholder="e.g. Sunday"></div>
+      <ul class="checklist">
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Menu released on platform at <input type="text" style="border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:60px;font-family:Lato,sans-serif;font-size:11px;outline:none;" placeholder="time"></span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Text notification confirmed sent to all customers</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Menu image posted to Facebook bakery page</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Menu posted to local Facebook groups</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Menu shared to personal Facebook page</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Instagram post published — order link in bio updated</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Comments and DMs checked and responded to</span></li>
+      </ul>
+    </div>
+
+    <div class="pale-box">
+      <div class="pale-label">Prep Day — Day: <input type="text" style="border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:80px;font-family:Lato,sans-serif;font-size:11px;outline:none;" placeholder="e.g. Tuesday"></div>
+      <ul class="checklist">
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Ingredient inventory checked — anything needed noted</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Grocery or supply run completed</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Starter fed and maintained</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Advance prep done — butter tempered, dry ingredients measured</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Order list reviewed — totals, special requests, quantities</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Labels printed if needed</span></li>
+      </ul>
+    </div>
+
+    <div class="pale-box">
+      <div class="pale-label">Cutoff — Night before bake day at: <input type="text" style="border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:80px;font-family:Lato,sans-serif;font-size:11px;outline:none;" placeholder="time"></div>
+      <ul class="checklist">
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Orders officially closed at set cutoff time</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Cutoff reminder sent — automated through platform</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Final order list reviewed and locked</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Production quantities finalized for bake day</span></li>
+      </ul>
+    </div>
+
+    <div class="pale-box">
+      <div class="pale-label">Delivery Day — Day: <input type="text" style="border:none;border-bottom:1.5px solid var(--kl);background:transparent;width:80px;font-family:Lato,sans-serif;font-size:11px;outline:none;" placeholder="e.g. Friday"></div>
+      <ul class="checklist">
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Pickup/delivery notifications sent to all customers</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Store deliveries completed</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Individual orders fulfilled</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Profit First allocation done — revenue allocated to all 4 accounts</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>First-time customer follow-up messages sent</span></li>
+        <li><div class="cb" onclick="this.classList.toggle('checked')"></div><span>Cycle reflection noted — what worked, what to change</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — CUSTOMER EXPERIENCE SOP -->
+  <div class="section">Section 3 — Customer Experience SOP</div>
+  <div class="hint">Write every template in your own voice. Save them where you can copy and paste quickly.</div>
+
+  <div style="display:grid;gap:8px;">
+    <div class="pale-box">
+      <div class="pale-label">Order Confirmation — Send immediately when order comes in</div>
+      <textarea class="box" style="min-height:50px;" placeholder='"Got your order — thank you so much! Your [products] will be ready for [pickup/delivery] on [day]. Can'\''t wait for you to try them!"'></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Delivery Notification — Morning of delivery day</div>
+      <textarea class="box" style="min-height:50px;" placeholder='"Good morning! Your order is ready and I'\''m heading out for deliveries. [Pickup details or delivery ETA.] Thank you so much — I hope you love every bite!"'></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">First-Time Customer Follow-Up — Within 24 hours of first delivery</div>
+      <textarea class="box" style="min-height:50px;" placeholder='"Hi [Name] — I just wanted to check in and make sure everything was perfect with your order. It means so much to have you as a new customer and I really hope you loved it. I'\''d love to see you on next week'\''s order list!"'></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Late Order Request — After cutoff</div>
+      <textarea class="box" style="min-height:45px;" placeholder='"I'\''m so sorry — orders closed and I'\''ve already finalized my production for this week. I'\''d love to have you next week! Here'\''s my order link: [link]"'></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Unhappy Customer Response</div>
+      <textarea class="box" style="min-height:45px;" placeholder='"I'\''m so sorry to hear that — thank you for telling me. [If your fault: I want to make this right for you.] [If preference: I appreciate the feedback.]"'></textarea>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">Week Off Announcement</div>
+      <textarea class="box" style="min-height:50px;" placeholder='"Hey everyone — just a heads up that [Bakery Name] will be taking a week off [dates]. No orders that week. We'\''ll be back [day] with a fresh menu — I can'\''t wait to bake for you again. Thank you always for your support!"'></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — EMERGENCY SOP -->
+  <div class="section">Section 4 — Emergency SOP</div>
+  <div class="hint">Fill these out before you need them. Not after.</div>
+
+  <div style="display:grid;gap:8px;">
+    <div class="pale-box">
+      <div class="pale-label">If I Am Sick on Bake Day</div>
+      <div class="field"><label>Who I contact first</label><input class="line" type="text" placeholder="Name + phone number"></div>
+      <div class="field" style="margin-bottom:0"><label>My message to customers</label>
+        <textarea class="box" style="min-height:50px;" placeholder='"Hi everyone — I'\''m not well today and unfortunately I won'\''t be able to fulfill this week'\''s orders. I'\''m so sorry. All orders will be refunded within [timeframe]. I'\''ll be back next week."'></textarea>
+      </div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">If an Ingredient Is Unavailable</div>
+      <div class="field"><label>Backup suppliers I can call</label><input class="line" type="text" placeholder="Store names and phone numbers"></div>
+      <div class="field" style="margin-bottom:0"><label>My message to affected customers</label>
+        <textarea class="box" style="min-height:45px;" placeholder='"Hi [Name] — I'\''m unfortunately unable to source [ingredient] for this week'\''s [product]. I'\''ve removed it from your order and issued a partial refund. I'\''m so sorry — it will be back next week."'></textarea>
+      </div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">If My Oven or Equipment Fails</div>
+      <div class="field"><label>Backup kitchen I could use in an emergency</label><input class="line" type="text" placeholder="Family member / church kitchen / friend"></div>
+      <div class="field"><label>Appliance repair contact</label><input class="line" type="text" placeholder="Name + phone number"></div>
+      <div class="field" style="margin-bottom:0"><label>My message to customers if I have to cancel</label>
+        <textarea class="box" style="min-height:45px;" placeholder='"Hi everyone — I'\''ve had an equipment issue and unfortunately cannot fulfill this week'\''s orders. All orders will be refunded within [timeframe]. I'\''m so sorry for the inconvenience."'></textarea>
+      </div>
+    </div>
+    <div class="pale-box">
+      <div class="pale-label">If a Delivery Is Missed or Late</div>
+      <textarea class="box" style="min-height:50px;" placeholder='"Hi [Name] — I owe you an apology. Your order did not make it to you today as expected and that is completely on me. [Solution.] I'\''m so sorry — this is not the experience I want for you."'></textarea>
+    </div>
+  </div>
+
+  <div class="dark-box" style="margin-top:12px;font-size:11px;">
+    <strong style="color:var(--kl);display:block;margin-bottom:4px;">Print this. Put it in your kitchen. Run your business from it.</strong>
+    A system that is written down is a system that can be trusted, repeated, and improved. That is what you are building here.
+  </div>
+    </div>
+    <footer class="ws-footer">
+      <span><strong>The Homebakery Launch Method</strong> · by Heather Drott · @drottshandmade</span>
+      <span>Lesson 7.4 · Your Complete SOP</span>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
